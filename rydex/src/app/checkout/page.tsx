@@ -7,7 +7,7 @@ import {
   XCircle, Clock, CreditCard, Banknote,
   ArrowRight, RotateCcw, AlertCircle, Wallet,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { getSocket } from "@/lib/socket";
 
@@ -21,6 +21,14 @@ type Status =
   | "payment" | "confirmed";
 
 export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-zinc-100"><Loader2 size={32} className="animate-spin text-zinc-900" /></div>}>
+      <CheckoutPageContent />
+    </Suspense>
+  );
+}
+
+function CheckoutPageContent() {
   const params = useSearchParams();
 
   const pickup    = params.get("pickup")    || "Pickup Location";
